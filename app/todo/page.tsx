@@ -1,7 +1,7 @@
 'use client'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export type Task = {
@@ -14,9 +14,9 @@ export type Task = {
 export default function Todo() {
   const [text, setText] = useState('');
   const [todos, setTodos] = useState<Task[]>([]);
-  const updateTodos = (todos: Task[]) => {
+  const updateTodos = useCallback((todos: Task[]) => {
     setTodos(todos.sort((a: Task, b: Task) => a.id - b.id))
-  }
+  }, [])
 
   const updateTodo = (id: number) => {
     fetch(`/api/todos/${id}`).then(res => res.json())
@@ -27,15 +27,15 @@ export default function Todo() {
       })
   }
 
-  const initTodos = () => {
+  const initTodos = useCallback(() => {
     fetch('/api/todos')
       .then(res => res.json())
       .then(data => updateTodos(data))
-  }
+  }, [updateTodos])
 
   useEffect(() => {
     initTodos()
-  }, [])
+  }, [initTodos])
 
   // 添加todo
   const handleSubmit = () => {
@@ -59,7 +59,7 @@ export default function Todo() {
       method: 'PUT',
       body: JSON.stringify({ completed: checked })
     }).then(res => res.json())
-      .then(data => {
+      .then(() => {
         updateTodo(id)
       })
   }
@@ -71,7 +71,7 @@ export default function Todo() {
     fetch(`/api/todos/${id}`, {
       method: 'DELETE'
     }).then(res => res.json())
-      .then(data => {
+      .then(() => {
         initTodos()
       })
   }
