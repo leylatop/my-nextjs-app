@@ -30,6 +30,8 @@
     "react-hook-form": "^7.54.2",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
+    "tokenizers": "^0.13.3",
+    "tokenizers-darwin-x64": "^0.13.4-rc1",
     "zod": "^3.24.2"
   },
   "devDependencies": {

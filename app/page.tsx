@@ -18,7 +18,7 @@ export default function Home() {
     {
       label: 'GridTrade',
       href: '/grid-trade',
-    },
+    }
   ]
   return (
     <NavigationMenu>
